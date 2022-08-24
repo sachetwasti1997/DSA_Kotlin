@@ -1,1 +1,25 @@
-6
+typealias alp = ArrayList<Pair<Int, Int>>
+class Solution {
+    fun maxProbability(n: Int, eg: Array<IntArray>, sP: DoubleArray, s: Int, e: Int): Double {
+        var i = 0
+        val gr = Array(n){ArrayList<alp>()}.apply{
+            this[it[0]].add(it[1] to sP[i])
+            this[it[1]].add(it[0] to sP[i])
+            i++
+        }
+        val q = PriorityQueue<Pair<Int, Double>>(n){a,b-> a.second-b.second}
+        val d = DoubleArray(n) {Double.MIN_VALUE}
+        d[s] = 1.0
+        q.add(0 to 0.0)
+        while (!q.isEmpty()) {
+            val tmp = q.poll()
+            for (i in gr[tmp.first]) {
+                if (d[i.first] < d[tmp.first]*i.second) {
+                    d[i.first] = d[tmp.first]*i.second
+                    q.add(i.first to d[i.first])
+                }
+            }
+        }
+        return d[e]
+    }
+}

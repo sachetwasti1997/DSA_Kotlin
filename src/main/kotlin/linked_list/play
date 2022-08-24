@@ -1,29 +1,25 @@
-typealias hsi = HashSet<Int>
+typealias alp = ArrayList<Pair<Int, Int>>
 class Solution {
-    fun maximalNetworkRank(n: Int, rds: Array<IntArray>): Int {
-        val gr = HashMap<Int, hsi>(n)
-        for (i in 0 until n) gr[i] = hsi()
-        rds.forEach{
-            gr[it[0]]?.add(it[1])
-            gr[it[1]]?.add(it[0])
+    fun maxProbability(n: Int, eg: Array<IntArray>, sP: DoubleArray, s: Int, e: Int): Double {
+        var i = 0
+        val gr = Array(n){ArrayList<alp>()}.apply{
+            this[it[0]].add(it[1] to sP[i])
+            this[it[1]].add(it[0] to sP[i])
+            i++
         }
-        var res = Int.MIN_VALUE
-        for (i in 0 until n-1) {
-            for (j in i+1 until n) {
-              var t = 0
-              gr[i]?.let{
-                  t+=it.size
-              }
-              gr[j]?.let{
-                  t+=it.size
-              }
-              if (gr[i]?.contains(j) == true) {
-                  res = Math.max(res, t-1)
-              }else {
-                  res = Math.max(res, t)
-              }
+        val q = PriorityQueue<Pair<Int, Double>>(n){a,b-> a.second-b.second}
+        val d = DoubleArray(n) {Double.MIN_VALUE}
+        d[s] = 1.0
+        q.add(0 to 0.0)
+        while (!q.isEmpty()) {
+            val tmp = q.poll()
+            for (i in gr[tmp.first]) {
+                if (d[i.first] < d[tmp.first]*i.second) {
+                    d[i.first] = d[tmp.first]*i.second
+                    q.add(i.first to d[i.first])
+                }
             }
         }
-        return res
+        return d[e]
     }
 }

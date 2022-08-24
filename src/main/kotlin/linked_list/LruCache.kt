@@ -7,7 +7,7 @@ class LRUCache(capacity: Int) {
   var hd: Node? = null
   var tl: Node? = null
   init {
-    mp = HashMap<Int, Node>(capacity)
+    mp = HashMap(capacity)
     cp = capacity
   }
 
