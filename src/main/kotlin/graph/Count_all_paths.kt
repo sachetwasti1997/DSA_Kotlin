@@ -10,9 +10,10 @@ class Count_all_paths {
         val gr = Array(n) { ArrayList<ali>() }.apply {
             roads.forEach {
                 this[it[0]].add(arrayListOf(it[1], it[2]))
+                this[it[1]].add(arrayListOf(it[0], it[2]))
             }
         }
-        val q = PriorityQueue<IntArray>(){a,b-> b[1]-a[1]}
+        val q = PriorityQueue<IntArray>(){a,b-> a[1]-b[1]}
         val dis = IntArray(n){Int.MAX_VALUE}
         val ways = IntArray(n){0}
         val MOD = 10.00.pow(9).toInt() + 7
@@ -21,7 +22,6 @@ class Count_all_paths {
         q.add(intArrayOf(0, 0))
         while (!q.isEmpty()) {
             val (curr, crr_dis) = q.poll()
-            if (curr == n-1) continue
             for ((ch, ch_dis) in gr[curr]) {
                 if (dis[ch] > crr_dis+ch_dis) {
                     ways[ch] = ways[curr]
