@@ -1,3 +1,26 @@
-4
-intArrayOf(intArrayOf(0,1,3),intArrayOf(1,2,1),intArrayOf(1,3,4),intArrayOf(2,3,1))
-4
+fun countPaths(n: Int, roads: Array<IntArray>): Int {
+    var dis = Int.MAX_VALUE
+    val grph = Array(n) { ArrayList<ali>() }.apply {
+        roads.forEach {
+            this[it[0]].add(arrayListOf(it[1], it[2]))
+        }
+    }
+    val q = LinkedList<IntArray>()
+    val dis = IntArray(n){Int.MAX_VALUE}
+    val ways = IntArray(n){0}
+    val MOD = 10.00.pow(9).toInt() + 7
+    dis[0] = 0
+    ways[0] = 1
+    q.add(intArrayOf(0, 0))
+    while (!q.isEmpty()) {
+        val (curr, crr_dis) = q.poll()
+        for ((ch, ch_dis) in gr[curr]) {
+            if (dis[ch] > crr_dis+ch_dis) {
+                ways[ch] = ways[curr]
+                dis[ch] = crr_dis+ch_dis
+                q.add(intArrayOf(ch, dis[ch]))
+            }else if (crr_dis+ch_dis == dis[ch]) ways[ch] = (ways[ch]+ways[curr]) % (MOD)
+        }
+    }
+    return ways[n-1]
+}

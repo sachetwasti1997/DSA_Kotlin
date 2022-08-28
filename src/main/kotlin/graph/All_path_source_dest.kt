@@ -5,7 +5,7 @@ typealias HmIA = HashMap<Int, ArrayList<Int>>
 
 class All_path_source_dest {
     fun leadsToDestination(n: Int, eg: Array<IntArray>, s: Int, d: Int): Boolean {
-        if (n == 1 && eg.size == 0) return true
+        if (n == 1 && eg.isEmpty()) return true
         val v = HsI(n)
         val bv = HsI(n)
         val gr = HmIA(n)
