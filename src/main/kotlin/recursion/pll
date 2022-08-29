@@ -1,0 +1,16 @@
+fun myPow(x: Double, n: Int): Double {
+    var x1 = x
+    var n1 = n.toLong()
+    if (n1 < 0) {
+        x = 1 / x
+        n1 *= -1
+    }
+    fun calc(n1: Long): Double {
+        if (n1 == 0) return 1
+        val ans = calc(n1/2)
+        if (n1.and(1) == 1) return x1 * ans * ans
+        return ans * ans
+    }
+    if (n1 >= 0) return calc(n1)
+    else return 1/calc(n1)
+}
