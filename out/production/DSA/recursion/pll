@@ -1,16 +1,21 @@
-fun myPow(x: Double, n: Int): Double {
-    var x1 = x
-    var n1 = n.toLong()
-    if (n1 < 0) {
-        x = 1 / x
-        n1 *= -1
+fun letterCombinations(digits: String): List<String> {
+    val mp = mapOf(2 to listOf('a', 'b', 'c'), 3 to listOf('d','e','f'), 4 to listOf('g','h','i'),
+            5 to listOf('j','k','l'), 6 to listOf('m','n','o'), 7 to listOf('p','q','r','s'),
+            8 to listOf('t','u','v'), 9 to listOf('w','x','y','z'))
+    var s = StringBuilder()
+    val n = digits.length
+    val res = ArrayList<String>()
+    fun dfs(indx: Int) {
+        if (s.length == n) {
+            res.add(s.toString())
+            return
+        }
+        for (i in mp[digits[indx]].orEmpty()) {
+            s.add(i)
+            dfs(indx+1)
+            s.deleteAt(s.length-1)
+        }
     }
-    fun calc(n1: Long): Double {
-        if (n1 == 0) return 1
-        val ans = calc(n1/2)
-        if (n1.and(1) == 1) return x1 * ans * ans
-        return ans * ans
-    }
-    if (n1 >= 0) return calc(n1)
-    else return 1/calc(n1)
+    dfs(0)
+    return res
 }
