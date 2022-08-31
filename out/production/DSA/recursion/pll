@@ -1,27 +1,15 @@
-fun lengthOfLongestSubstringTwoDistinct(s: String): Int {
+fun lengthOfLongestSubstringKDistinct(s: String, k: Int): Int {
   val map = HashMap<Char, Int>(s.length)
-  var res = 0
+  var start = 0
   var max_length = 0
-  var start = -1
   for (i in s.indices) {
-    if (map[s[i]] == null) map[i] = 0
-    map[s[i]]?.let{
-      if (start == -1) {
-        start = i
-        end = start
-      }
-      map[s[i]] = it+1
-      if (map.size <= 2) res += it + 1
-    }
-    if (map.size == 3) {
-      map[s[start]]?.let{
-        map[s[start]] = it - 1
-        res -= 1
-      }
+    map[s[i]] = map.getOrPut(s[i]){0} + 1
+    if (map.size > k) {
+      map[s[start]]?.let{ map[s[start]] = it - 1 }
       if (map[s[start]] == 0) map.remove(s[start])
-      start++
+      start ++
     }
-    max_length = max_length.coerceAtLeast(res)
+    max_length = max_length.coerceAtLeast(i - start + 1)
   }
   return max_length
 }
