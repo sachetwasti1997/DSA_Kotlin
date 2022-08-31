@@ -1,21 +1,27 @@
-fun letterCombinations(digits: String): List<String> {
-    val mp = mapOf(2 to listOf('a', 'b', 'c'), 3 to listOf('d','e','f'), 4 to listOf('g','h','i'),
-            5 to listOf('j','k','l'), 6 to listOf('m','n','o'), 7 to listOf('p','q','r','s'),
-            8 to listOf('t','u','v'), 9 to listOf('w','x','y','z'))
-    var s = StringBuilder()
-    val n = digits.length
-    val res = ArrayList<String>()
-    fun dfs(indx: Int) {
-        if (s.length == n) {
-            res.add(s.toString())
-            return
-        }
-        for (i in mp[digits[indx]].orEmpty()) {
-            s.add(i)
-            dfs(indx+1)
-            s.deleteAt(s.length-1)
-        }
+fun lengthOfLongestSubstringTwoDistinct(s: String): Int {
+  val map = HashMap<Char, Int>(s.length)
+  var res = 0
+  var max_length = 0
+  var start = -1
+  for (i in s.indices) {
+    if (map[s[i]] == null) map[i] = 0
+    map[s[i]]?.let{
+      if (start == -1) {
+        start = i
+        end = start
+      }
+      map[s[i]] = it+1
+      if (map.size <= 2) res += it + 1
     }
-    dfs(0)
-    return res
+    if (map.size == 3) {
+      map[s[start]]?.let{
+        map[s[start]] = it - 1
+        res -= 1
+      }
+      if (map[s[start]] == 0) map.remove(s[start])
+      start++
+    }
+    max_length = max_length.coerceAtLeast(res)
+  }
+  return max_length
 }

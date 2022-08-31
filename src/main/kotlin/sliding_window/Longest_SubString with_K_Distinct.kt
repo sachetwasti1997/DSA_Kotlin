@@ -1,4 +1,19 @@
 package sliding_window
 
 class `Longest_SubString with_K_Distinct` {
+  fun lengthOfLongestSubstringKDistinct(s: String, k: Int): Int {
+    val map = HashMap<Char, Int>(s.length)
+    var start = 0
+    var max_length = 0
+    for (i in s.indices) {
+      map[s[i]] = map.getOrPut(s[i]){0} + 1
+      if (map.size > k) {
+        map[s[start]]?.let{ map[s[start]] = it - 1 }
+        if (map[s[start]] == 0) map.remove(s[start])
+        start ++
+      }
+      max_length = max_length.coerceAtLeast(i - start + 1)
+    }
+    return max_length
+  }
 }
