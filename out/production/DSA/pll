@@ -1,3 +1,14 @@
-fun longestSubstring(s: String, k: Int): Int {
-
+class Solution {
+  fun containsNearbyAlmostDuplicate(nums: IntArray, k: Int, t: Int): Boolean {
+    val arr = Array(nums.size){i->nums[i] to i}
+    arr.sortBy{ it.first }
+    for (i in nums.indices) {
+      var j = i + 1
+      while (j < nums.size && (nums[j].first - nums[i].first) <= t) {
+        if (nums[j].second - nums[i].second <= k) return true
+        j++
+      }
+    }
+    return false
+  }
 }
