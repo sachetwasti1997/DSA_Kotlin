@@ -1,14 +1,29 @@
 class Solution {
-  fun containsNearbyAlmostDuplicate(nums: IntArray, k: Int, t: Int): Boolean {
-    val arr = Array(nums.size){i->nums[i] to i}
-    arr.sortBy{ it.first }
-    for (i in nums.indices) {
-      var j = i + 1
-      while (j < nums.size && (nums[j].first - nums[i].first) <= t) {
-        if (nums[j].second - nums[i].second <= k) return true
-        j++
+  fun totalFruit(fruits: IntArray): Int {
+    val bask = HashMap<Int, Int>()
+    var left = 0
+    var right = 0
+    val total = 0
+    val curr = 0
+    while (left < fruits.size && right < fruits.size) {
+      if (fruits[right] !in bask && bask.size < 2) {
+        bask[fruits[left]] = 1
+        right ++
+      }
+      else if (fruits[right] in bask && bask.size <= 2) {
+        bask[fruits[right]]?.let{
+          bask[fruits[right]] += 1
+        }
+        right ++
+      }else if (fruits[right] !in bask && bask.size == 2) {
+        for ((k, v) in bask) {
+          curr += v
+        }
+        total = total.coerseAtLeast(curr)
+        left++
+        right = left
       }
     }
-    return false
+    return total
   }
 }
