@@ -1,29 +1,22 @@
 class Solution {
-  fun totalFruit(fruits: IntArray): Int {
-    val bask = HashMap<Int, Int>()
-    var left = 0
-    var right = 0
-    val total = 0
-    val curr = 0
-    while (left < fruits.size && right < fruits.size) {
-      if (fruits[right] !in bask && bask.size < 2) {
-        bask[fruits[left]] = 1
-        right ++
-      }
-      else if (fruits[right] in bask && bask.size <= 2) {
-        bask[fruits[right]]?.let{
-          bask[fruits[right]] += 1
-        }
-        right ++
-      }else if (fruits[right] !in bask && bask.size == 2) {
-        for ((k, v) in bask) {
-          curr += v
-        }
-        total = total.coerseAtLeast(curr)
-        left++
-        right = left
-      }
+  fun numsSameConsecDiff(n: Int, k: Int): IntArray {
+    if (n == 1) return intArrayOf(1,2,3,4,5,6,7,8,9)
+    val q = LinkedList<Int>()
+    for (i in 1 .. 9) q.add(i)
+    var cnt = 1
+    while (!q.isEmpty()) {
+      val tmp = q.poll()
+      cnt++
+      val lst_dgt = tmp % 10
+      var newNum = -1
+      if (lst_dgt + k < 10) newNum = lst_dgt + k
+      else if (lst_dgt - k >= 0) newNum = lst_dgt - k
+      q.add(tmp * 10 + newNum)
+      if (cnt == n) break
     }
-    return total
+    val res =  IntArray(q.size)
+    var i = 0
+    while (!q.isEmpty()) res[i++] = q.poll()
+    return res
   }
 }
