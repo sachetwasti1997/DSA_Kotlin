@@ -1,22 +1,17 @@
 class Solution {
-  fun numsSameConsecDiff(n: Int, k: Int): IntArray {
-    if (n == 1) return intArrayOf(1,2,3,4,5,6,7,8,9)
-    val q = LinkedList<Int>()
-    for (i in 1 .. 9) q.add(i)
-    var cnt = 1
-    while (!q.isEmpty()) {
-      val tmp = q.poll()
-      cnt++
-      val lst_dgt = tmp % 10
-      var newNum = -1
-      if (lst_dgt + k < 10) newNum = lst_dgt + k
-      else if (lst_dgt - k >= 0) newNum = lst_dgt - k
-      q.add(tmp * 10 + newNum)
-      if (cnt == n) break
-    }
-    val res =  IntArray(q.size)
-    var i = 0
-    while (!q.isEmpty()) res[i++] = q.poll()
-    return res
+  fun longestOnes(nums: IntArray, k: Int): Int {
+    val map = HashMap<Int, Int>()
+    var zeroCnt = 0
+    var start = 0
+    var max_len = 0
+    for (i in nums) {
+      if (nums[i] == 0) zeroCnt++
+      while (zeroCnt > k) {
+        if (nums[start] == 0) zeroCnt --
+        start ++
+      } 
+      max_len = max_len.coerceAtLeast(i - start + 1)
+    }  
+    return max_len    
   }
 }
